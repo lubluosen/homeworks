@@ -29,11 +29,11 @@ PRIME = "prime"
 def filter_numbers(num_list, num):
     result = []
     for numbers in num_list:
-        if num == "odd" and numbers % 2 != 0:
+        if num == ODD and numbers % 2 != 0:
             result.append(numbers)
-        elif num == "even" and numbers % 2 == 0:
+        elif num == EVEN and numbers % 2 == 0:
             result.append(numbers)
-        elif num == "prime" and prime(numbers):
+        elif num == PRIME and prime(numbers):
             result.append(numbers)
     return result
 
