@@ -1,23 +1,27 @@
 from abc import ABC
-from homework_02.exceptions import LowFuelError, NotEnoughFuel
+from .exceptions import LowFuelError, NotEnoughFuel
 
 
 class Vehicle(ABC):
-    def __init__(self, weight: int | float = 0, fuel: int | float = 0, fuel_consumption: int | float = 0):
+
+    def __init__(self, weight, fuel, fuel_consumption):
+        """
+        Set weight, fuel and fuel_consumption here
+        """
         self.weight = weight
-        self.started = False
         self.fuel = fuel
         self.fuel_consumption = fuel_consumption
+        self.started = False
 
-    def start(self) -> None:
-        if not self.started:
-            if self.fuel > 0:
-                self.started = True
-            else:
-                raise LowFuelError
+    def start(self):
+        if self.started:
+            return
+        if self.fuel <= 0:
+            raise LowFuelError
+        self.started = True
 
-    def move(self, distance: int | float) -> None:
-        total_fuel = distance * self.fuel_consumption
-        if total_fuel > self.fuel:
+    def move(self, distance: int):
+        to_spend = (distance * self.fuel_consumption)
+        if to_spend > self.fuel:
             raise NotEnoughFuel
-        self.fuel -= total_fuel
+        self.fuel -= to_spend
