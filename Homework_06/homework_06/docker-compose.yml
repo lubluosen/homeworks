@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:13.3
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: mydb
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  web:
+    build: .
+    command: gunicorn --bind 127.0.0.1:8000 wsgi:app
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      FLASK_ENV: production-ready
+      DATABASE_URL: postgresql://user:example@db:5432/mydb
+    networks:
+      - backend
+
+volumes:
+  db_data:
+
+networks:
+  backend:
